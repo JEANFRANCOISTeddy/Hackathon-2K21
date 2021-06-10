@@ -1,0 +1,53 @@
+<!Doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hash Degree</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/sha3.js" type="text/javascript"></script>
+    <script src="../node_modules/web3/dist/web3.min.js"></script>
+</head>
+
+<h1 class="title" style="font-size: 50px; position: absolute; top: 0px;">HACKATHON 2K21</h1>
+
+<div class="form">
+    <div class="title">Degrees</div>
+    <div class="subtitle">Add and hash degree document</div>
+    <div class="input-container ic1">
+        <input id="firstname" class="input" type="text" placeholder=" " />
+        <div class="cut"></div>
+        <label for="firstname" class="placeholder">First name</label>
+    </div>
+    <div class="input-container ic2">
+        <input id="lastname" class="input" type="text" placeholder=" " />
+        <div class="cut"></div>
+        <label for="lastname" class="placeholder">Last name</label>
+    </div>
+    <div class="input-container ic2">
+        <input id="degree_type" class="input" type="text" placeholder=" " />
+        <div class="cut"></div>
+        <label for="degree_type" class="placeholder">Degree Type</label>
+    </div>
+    <div class="input-container ic2">
+        <input id="degree" class="input" style="padding-top:13px" type="file" placeholder=" " />
+    </div>
+    <button type="text" class="submit" id="add">Add new degree</button>
+</div>
+<div class="subtitle" style="position: absolute; bottom: 40px;">Hashed degree : <span id="hash_degree"></span></div>
+
+<div class="form2">
+    <div class="title2">Result</div>
+    <div class="subtitle2">Verifiy your hash !</div>
+    <div class="input-container ic1">
+        <textarea id="hashed_value" class="input" placeholder="Degree's hash" style="height: 150px; padding-top: 10px;"></textarea>
+    </div> 
+    <!-- <div class="subtitle" style="color: #15172b; position: absolute; bottom: 250px; right: 520px;" id="success"></div> -->
+    <button type="text" class="submit3" id="connect">Connect your wallet</button>
+    <button type="text" class="submit2" id="verify">Verify degree</button>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="../js/script.js"></script>
+
+</html>
