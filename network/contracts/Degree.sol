@@ -22,17 +22,19 @@ contract Degree is Owner {
         emit degreeAdded(_hashedDocument);
     }
 
-    function verifyHashedDegree(string memory targetHash) public view returns(bool) {
+    function verifyHashedDegree(string memory targetHash) public view returns(string[] memory) {
         bytes32 hashBytes = keccak256(abi.encodePacked(targetHash) );
         for(uint i = 0; i <hashedDegree.length; i++){
             if(keccak256(abi.encodePacked(hashedDegree[i])) == hashBytes ){
-                return true;
+                //return true;
                 //return listInformations[targetHash];
+                return hashedDegree;
             }
         }  
 
-        return false;
+        //return false;
         //return DegreeInformations("fail", "fail", "fail");
+        return hashedDegree;
     }
     
     function viewDegree(string memory _hashedDocument) public view returns (string memory, string memory, string memory)  {
