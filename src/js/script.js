@@ -170,8 +170,8 @@ async function loadWeb3() {
   let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
   web3.eth.getAccounts().then(account => { 
     firstAccount = account[0];
-    degreeAddr = '0x36Be723aE874636E06553C9D604C53a4b953D820';
-    ownerAddr = '0x9D2548b7171970aB67c092Ed11e41bEcF28E3642';
+    degreeAddr = '0xe12B561789557F7455b7351C45DAeFd6dDa9Bc3F';
+    ownerAddr = '0xA9815b0077c4B09fCa07fC8010AA310061bb58A9';
     degreeContract = new web3.eth.Contract(degreeAbi, degreeAddr);
     ownerContract = new web3.eth.Contract(ownerAbi,  ownerAddr);
 
@@ -190,6 +190,7 @@ $('#add').on('click', function() {
 
     let document = $('#degree').val();
     let hashed_degree = keccak256(document);
+    console.log(document);
 
     $('#hash_degree').html(hashed_degree);
 
@@ -207,9 +208,10 @@ $('#add').on('click', function() {
 
 $('#verify').on('click', function() {
     let hashed_value = $('#hashed_value').val();
-    console.log(hashed_value);
+    console.log("hash:" + hashed_value);
 
-    degreeContract.methods.verifyHashedDegree(hashed_value).call().then(function(error, result){
+    degreeContract.methods.verifyHashedDegree(hashed_value).call().then(function(error ,result){
       console.log(result);
+      console.log(error);
     });
 });
