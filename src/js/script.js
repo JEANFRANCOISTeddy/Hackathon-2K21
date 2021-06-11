@@ -9,6 +9,25 @@ const degreeAbi = [
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "string",
         "name": "hashedDocument",
@@ -17,13 +36,6 @@ const degreeAbi = [
     ],
     "name": "degreeAdded",
     "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "Ownable",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
   },
   {
     "inputs": [
@@ -58,6 +70,26 @@ const degreeAbi = [
     "stateMutability": "view",
     "type": "function",
     "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [
@@ -98,39 +130,26 @@ const degreeAbi = [
     "name": "verifyHashedDegree",
     "outputs": [
       {
-        "internalType": "bytes",
+        "components": [
+          {
+            "internalType": "string",
+            "name": "studentFirstname",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "studentLastname",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "degreeType",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct Degree.DegreeInformations",
         "name": "",
-        "type": "bytes"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_hashedDocument",
-        "type": "string"
-      }
-    ],
-    "name": "viewDegree",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -140,38 +159,35 @@ const degreeAbi = [
 ];
 
 const ownerAbi = [
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "Ownable",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }
-]
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "Ownable",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
 
 async function loadWeb3() {
   let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
   web3.eth.getAccounts().then(account => { 
     firstAccount = account[0];
-    degreeAddr = '0xe12B561789557F7455b7351C45DAeFd6dDa9Bc3F';
-    ownerAddr = '0xA9815b0077c4B09fCa07fC8010AA310061bb58A9';
+    degreeAddr = '0xb479028a66924DB57C9dD4C6Ef390833B0f7A618';
+    ownerAddr = '0x07998b85eF530A46e0Aa0EE3E9cB3237046A2337';
     degreeContract = new web3.eth.Contract(degreeAbi, degreeAddr);
     ownerContract = new web3.eth.Contract(ownerAbi,  ownerAddr);
 
@@ -194,13 +210,12 @@ $('#add').on('click', function() {
 
     $('#hash_degree').html(hashed_degree);
 
-    degreeContract.methods.addHashedDegree(hashed_degree, firstname, lastname, degree_type).send({ from: firstAccount }).on('transactionHash', function(hash){
+    degreeContract.methods.addHashedDegree(hashed_degree, firstname, lastname, degree_type).send({ from: firstAccount , gas: 6721975 }).on('transactionHash', function(hash){
     })
     .on('confirmation', function(confirmationNumber, receipt){
       console.log(receipt);
     })
     .on('receipt', function(receipt){
-
     })
     .on('error', console.error)
 
@@ -210,8 +225,7 @@ $('#verify').on('click', function() {
     let hashed_value = $('#hashed_value').val();
     console.log("hash:" + hashed_value);
 
-    degreeContract.methods.verifyHashedDegree(hashed_value).call().then(function(error ,result){
+    degreeContract.methods.verifyHashedDegree(hashed_value).call().then(function(result, error){
       console.log(result);
-      console.log(error);
     });
 });
